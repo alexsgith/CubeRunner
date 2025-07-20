@@ -1,16 +1,45 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RemoteDataReceive : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    
+    public static RemoteDataReceive Instance { get; private set; }
+    [SerializeField]RemotePlayer remotePlayer;
+    private Queue<SyncState> syncBuffer = new Queue<SyncState>();
+    private void Awake()
     {
-        
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PassStateData(SyncState state)
     {
-        
+        Debug.Log("Send state: " + state.playerState);
+        syncBuffer.Enqueue(state);
+        StartCoroutine(PassDataWithDelay());
+    }
+
+    IEnumerator PassDataWithDelay()
+    {
+        yield return null;
+        SyncState state = syncBuffer.Dequeue();
+        remotePlayer.SetSyncedPosition(state);
+    }
+}
+public struct SyncState
+{
+    public Vector3 position;
+    public int playerScore;
+    public String playerState;
+    public SyncState(Vector3 pos, int score, string state)
+    {
+        position = pos;
+        playerScore = score;
+        playerState = state;
     }
 }

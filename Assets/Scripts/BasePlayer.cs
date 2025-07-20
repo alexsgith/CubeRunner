@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 public class BasePlayer : MonoBehaviour
@@ -34,9 +33,7 @@ public class BasePlayer : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (playerState == PlayerState.GameOver) return;
-
-        MoveForward();
+        MoveForward(); 
         UpdateScore();
     }
 
@@ -83,11 +80,12 @@ public class BasePlayer : MonoBehaviour
         else if (collision.gameObject.CompareTag("Barrier"))
         {
             playerState = PlayerState.GameOver;
-            StartCoroutine(CallGameOver());
+            GameOver?.Invoke();
+            ResetPlayer();
         }
     }
 
-    public void StartPlay()
+    public virtual void StartPlay()
     {
         playerState = PlayerState.Run;
         orbScore = distanceScore = 0;
@@ -96,18 +94,10 @@ public class BasePlayer : MonoBehaviour
 
     public int GetScore() => distanceScore + orbScore;
 
-    protected void ResetPlayer()
+    protected virtual void ResetPlayer()
     {
         initialSpeed = 3;
         transform.localPosition = initialPosition;
-    }
-
-    protected IEnumerator CallGameOver()
-    {
-        yield return new WaitForSeconds(1);
-        GameOver?.Invoke();
-        yield return null;
-        ResetPlayer();
     }
 }
 public enum PlayerState
