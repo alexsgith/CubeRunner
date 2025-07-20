@@ -21,14 +21,8 @@ public class RemoteDataReceive : MonoBehaviour
     {
         Debug.Log("Send state: " + state.playerState);
         syncBuffer.Enqueue(state);
-        StartCoroutine(PassDataWithDelay());
-    }
-
-    IEnumerator PassDataWithDelay()
-    {
-        yield return null;
-        SyncState state = syncBuffer.Dequeue();
         remotePlayer.SetSyncedPosition(state);
+        syncBuffer.Dequeue();
     }
 }
 public struct SyncState
