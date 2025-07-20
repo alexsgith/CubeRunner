@@ -6,7 +6,7 @@ public class UiManager : MonoBehaviour
 {
     [SerializeField] private GameObject mainMenuScreen;
     [SerializeField] private GameObject gameOverScreen;
-    [SerializeField] private PlayerManager playerScript;
+    [SerializeField] private BasePlayer playerScript;
     [SerializeField] private TMP_Text topScoreText;
     [SerializeField] private TMP_Text currentScoreText;
     int currentTopScore = 0;

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class FloorManager : MonoBehaviour
 {
-    [SerializeField]PlayerManager playerScript;
+    [SerializeField]BasePlayer playerScript;
     private LinkedList<Transform> floorsPool = new();
     private List<Vector3> initialFloor = new();
     private float floorDistance;
